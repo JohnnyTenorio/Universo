@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para la mejor persona del universo</title>
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuEgS1atNYuJuHsXwJO3pDkclBP9Sz5fApTw&s" type="image/x-icon">
+    <style>
+        /* --- Fuentes de Google --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
+
+        /* --- Estilos Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            background-color: #020111;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        /* --- Fondo del Universo estático --- */
+        .universe-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(30, 10, 60, 0.6), transparent 70%),
+                radial-gradient(circle at 20% 30%, rgba(150, 50, 200, 0.2), transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 100, 255, 0.15), transparent 50%);
+            background-size: 100% 100%;
+            z-index: 1;
+        }
+
+        /* --- OPTIMIZADA: Galaxia Espiral sin Filtros Pesados --- */
+        .galaxy-spiral {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 90vw;
+            height: 90vw;
+            max-width: 800px;
+            max-height: 800px;
+            /* Se eliminó filter: blur() y se suavizó directamente mediante opacidades en el gradiente */
+            background: 
+                radial-gradient(circle at 50% 50%, #ffffff 0%, rgba(255, 200, 255, 0.6) 5%, rgba(218, 112, 214, 0.3) 15%, transparent 55%),
+                conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(138, 43, 226, 0.25) 60deg, transparent 120deg, rgba(0, 191, 255, 0.2) 180deg, transparent 240deg, rgba(218, 112, 214, 0.25) 300deg, transparent 360deg);
+            border-radius: 50%;
+            mix-blend-mode: screen;
+            z-index: 1;
+            opacity: 0.8;
+            pointer-events: none;
+            
+            /* Aceleración de Hardware agresiva */
+            will-change: transform;
+            transform: translate3d(-50%, -50%, 0) rotateX(65deg) rotateZ(0deg);
+            animation: galaxyRotate 45s linear infinite;
+        }
+
+        /* Usamos translate3d para forzar el uso de la GPU */
+        @keyframes galaxyRotate {
+            from {
+                transform: translate3d(-50%, -50%, 0) rotateX(65deg) rotateZ(0deg);
+            }
+            to {
+                transform: translate3d(-50%, -50%, 0) rotateX(65deg) rotateZ(360deg);
+            }
+        }
+
+        /* --- Estrellas Brillantes --- */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 3s) infinite ease-in-out;
+            opacity: var(--opacity, 0.5);
+            will-change: transform, opacity;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.3); opacity: 0.9; }
+        }
+
+        /* --- Interfaz Lateral --- */
+        .side-menu {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .menu-item {
+            width: 55px;
+            height: 55px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(4px);
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background: rgba(218, 112, 214, 0.3);
+            border-color: #da70d6;
+            box-shadow: 0 0 15px rgba(218, 112, 214, 0.5);
+            transform: scale(1.1);
+        }
+
+        .menu-item::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 70px;
+            background: rgba(10, 5, 30, 0.85);
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            border: 1px solid rgba(218, 112, 214, 0.4);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .menu-item:hover::after {
+            opacity: 1;
+            left: 65px;
+        }
+
+        /* --- Contenedor Principal --- */
+        .main-content {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #8b008b;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .sub-text {
+            font-size: 1.1rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 40px;
+        }
+
+        .highlight {
+            color: #ff77ff;
+            font-weight: 600;
+            text-shadow: 0 0 8px rgba(255, 119, 255, 0.6);
+            border-bottom: 2px dashed rgba(255, 119, 255, 0.4);
+        }
+
+        .cosmic-btn {
+            background: linear-gradient(45deg, #4b0082, #da70d6);
+            border: none;
+            color: white;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(218, 112, 214, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .cosmic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(218, 112, 214, 0.7);
+            background: linear-gradient(45deg, #da70d6, #00bfff);
+        }
+
+        /* --- Tarjeta de Mensaje Emergente --- */
+        .popup-card {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 340px;
+            background: rgba(15, 10, 35, 0.85);
+            border: 1px solid rgba(218, 112, 214, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 10;
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1), opacity 0.3s ease;
+        }
+
+        .popup-card.active {
+            transform: translateY(0);
+        }
+
+        .popup-card h3 {
+            font-size: 1.1rem;
+            color: #ff77ff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .popup-card p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        /* --- Control de Música Visualizado --- */
+        .music-widget {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 15px;
+        }
+
+        .bar {
+            width: 3px;
+            height: 100%;
+            background-color: #ff77ff;
+            animation: bounce 1s ease infinite alternate;
+        }
+        .bar:nth-child(2) { animation-delay: 0.2s; }
+        .bar:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0% { height: 3px; }
+            100% { height: 15px; }
+        }
+
+        /* --- Adaptación Móvil --- */
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.5rem; }
+            .side-menu { bottom: 20px; top: auto; left: 50%; transform: translate3d(-50%, 0, 0); flex-direction: row; }
+            .menu-item::after { display: none; }
+            .popup-card { right: 5%; left: 5%; width: 90%; bottom: 100px; }
+            .galaxy-spiral { width: 130vw; height: 130vw; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="universe-bg"></div>
+    <div class="galaxy-spiral"></div> 
+    <div class="stars" id="starsContainer"></div>
+
+    <div class="music-widget" onclick="alert('🎵 ¡Aquí puedes conectar tu canción favorita!')">
+        <span>🌌 Espacio Profundo.mp3</span>
+        <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <div class="side-menu">
+        <div class="menu-item" data-tooltip="Inicio" onclick="window.location.reload()">✨</div>
+        <div class="menu-item" data-tooltip="Ver Mensaje Secreto" onclick="mostrarMensajeAleatorio()">💜</div>
+        <div class="menu-item" data-tooltip="Lluvia de estrellas" onclick="crearSuperEstrella()">☄️</div>
+        <div class="menu-item" data-tooltip="Explorar Galaxia" onclick="cambiarUniverso()">🪐</div>
+    </div>
+
+    <main class="main-content">
+        <h1 class="main-title">Eres la mejor persona que conocí en mi vida.</h1>
+        <p class="sub-text">
+            En este universo tan grande, lleno de millones de estrellas y galaxias infinitas, <br>
+            tú sigues siendo <span class="highlight">la que más brilla</span> para mí.
+        </p>
+        <button class="cosmic-btn" onclick="mostrarMensajeAleatorio()">Haz clic aquí ✨</button>
+    </main>
+
+    <div class="popup-card" id="popupCard">
+        <h3 id="popupTitle"><span>💝</span> Hola, persona increíble</h3>
+        <p id="popupText">Este universo existe porque tú haces que mi mundo sea un millón de veces mejor. Gracias por cruzarte en mi órbita.</p>
+    </div>
+
+    <script>
+        const mensajesInspiracionales = [
+            { icono: "💝", titulo: "Hola, persona increíble", texto: "Este universo existe porque tú haces que mi mundo sea un millón de veces mejor. Gracias por cruzarte en mi órbita." },
+            { icono: "✨", titulo: "Mi estrella favorita", texto: "Ni sumando todos los destellos de la Vía Láctea se podría comparar a lo mucho que iluminas mis días más oscuros." },
+            { icono: "🪐", titulo: "Gravedad perfecta", texto: "Me alegra tanto que nuestras órbitas coincidieran en este inmenso espacio-tiempo. Eres una coincidencia maravillosa." },
+            { icono: "☄️", titulo: "Un deseo al cosmos", texto: "Si viera caer una estrella fugaz ahora mismo, no pediría nada, porque haberte conocido ya cumplió mi mejor deseo." },
+            { icono: "🔮", titulo: "Más allá del infinito", texto: "El espacio puede expandirse eternamente, pero el cariño y admiración que te tengo compite fuertemente con su tamaño." },
+            { icono: "🌙", titulo: "Siempre presente", texto: "Hay personas que son como estrellas fugaces, pero tú eres como el sol de mi sistema: mantienes todo en perfecto equilibrio." }
+        ];
+
+        // Reducido ligeramente el número de estrellas para optimizar procesamiento en móviles
+        const container = document.getElementById('starsContainer');
+        const numberOfStars = 80; 
+
+        for (let i = 0; i < numberOfStars; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            const size = Math.random() * 2.5;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.setProperty('--duration', `${2.5 + Math.random() * 3.5}s`);
+            star.style.setProperty('--opacity', Math.random() * 0.7 + 0.3);
+            container.appendChild(star);
+        }
+
+        let ultimoIndice = -1;
+
+        function mostrarMensajeAleatorio() {
+            const card = document.getElementById('popupCard');
+            const titleElement = document.getElementById('popupTitle');
+            const textElement = document.getElementById('popupText');
+
+            if (!card.classList.contains('active')) {
+                let nuevoIndice;
+                do {
+                    nuevoIndice = Math.floor(Math.random() * mensajesInspiracionales.length);
+                } while (nuevoIndice === ultimoIndice);
+                
+                ultimoIndice = nuevoIndice;
+                const mensaje = mensajesInspiracionales[nuevoIndice];
+                titleElement.innerHTML = `<span>💝</span> ${mensaje.titulo}`;
+                textElement.innerText = mensaje.texto;
+                card.classList.add('active');
+            } else {
+                titleElement.style.opacity = 0;
+                textElement.style.opacity = 0;
+                setTimeout(() => {
+                    let nuevoIndice;
+                    do {
+                        nuevoIndice = Math.floor(Math.random() * mensajesInspiracionales.length);
+                    } while (nuevoIndice === ultimoIndice);
+                    ultimoIndice = nuevoIndice;
+                    const mensaje = mensajesInspiracionales[nuevoIndice];
+                    titleElement.innerHTML = `<span>${mensaje.icono}</span> ${mensaje.titulo}`;
+                    textElement.innerText = mensaje.texto;
+                    titleElement.style.opacity = 1;
+                    textElement.style.opacity = 1;
+                }, 150);
+            }
+        }
+
+        function crearSuperEstrella() {
+            const fugaz = document.createElement('div');
+            fugaz.style.position = 'absolute';
+            fugaz.style.width = '4px';
+            fugaz.style.height = '4px';
+            fugaz.style.background = '#fff';
+            fugaz.style.top = `${Math.random() * 40}%`;
+            fugaz.style.left = '-10px';
+            fugaz.style.borderRadius = '50%';
+            fugaz.style.boxShadow = '0 0 10px 2px #fff';
+            // Optimizada con asignación directa en lugar de transiciones pesadas de CSS
+            fugaz.style.willChange = 'transform';
+            fugaz.style.zIndex = '3';
+            container.appendChild(fugaz);
+
+            let anim = fugaz.animate([
+                { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
+                { transform: 'translate3d(110vw, 45vh, 0) scale(1.5)', opacity: 0 }
+            ], { duration: 1000, easing: 'linear' });
+
+            anim.onfinish = () => fugaz.remove();
+        }
+
+        function cambiarUniverso() {
+            const bg = document.querySelector('.universe-bg');
+            const galaxy = document.querySelector('.galaxy-spiral');
+            const r1 = Math.floor(Math.random() * 180);
+            const r2 = Math.floor(Math.random() * 180);
+            
+            bg.style.background = `
+                radial-gradient(circle at 30% 40%, rgba(${r1}, 0, 220, 0.4), transparent 60%),
+                radial-gradient(circle at 70% 60%, rgba(0, ${r2}, 220, 0.3), transparent 60%)
+            `;
+            galaxy.style.background = `
+                radial-gradient(circle at 50% 50%, #ffffff 0%, rgba(${r1}, 180, 255, 0.6) 5%, rgba(${r2}, 112, 214, 0.3) 15%, transparent 55%),
+                conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(${r1}, 43, 226, 0.25) 60deg, transparent 120deg, rgba(0, ${r2}, 255, 0.2) 180deg, transparent 240deg, rgba(218, ${r1}, 214, 0.25) 300deg, transparent 360deg)
+            `;
+        }
+    </script>
+</body>
+</html>
